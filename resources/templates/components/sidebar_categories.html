@@ -1,0 +1,14 @@
+{{ define "components/sidebar_categories.html" }}
+<div class="sidebar-item categories">
+  <div class="sidebar-heading">
+    <h2>Categories</h2>
+  </div>
+  <div class="content">
+    <ul>
+      {{ range $i, $category := .categories }}
+      <li><a href="#">&bull; {{ $category.Name }}</a></li>
+      {{ end }}
+    </ul>
+  </div>
+</div>
+{{ end }}

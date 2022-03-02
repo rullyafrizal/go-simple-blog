@@ -1,0 +1,53 @@
+{{ define "auth/login.html" }}
+<!DOCTYPE html>
+<html lang="en">
+  {{ template "layouts/head.html" .}}
+<body>
+  {{ template "components/preloader.html" .}}
+  {{ template "layouts/navbar.html" .}}
+
+  <section class="ftco-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+          <h2 class="heading-section">&nbsp;</h2>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-12">
+          <div class="wrap d-lg-flex d-sm-flex d-xl-flex d-md-flex justify-content-center">
+            <div class="flex-fill"></div>
+            <div class="card flex-fill shadow-sm p-4 p-md-5 mt-5 rounded">
+              <div class="d-flex">
+                <div class="w-100">
+                  <h3 class="mb-4">Sign In</h3>
+                </div>
+              </div>
+              <form action="#" class="signin-form">
+                <div class="form-group mb-3">
+                  <label class="label" for="name">Email</label>
+                  <input type="text" class="form-control" placeholder="johndoe@gmail.com" name="email" required="">
+                </div>
+                <div class="form-group mb-3">
+                  <label class="label" for="password">Password</label>
+                  <input type="password" class="form-control" placeholder="***********" name="password" required="">
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="form-control btn btn-primary rounded submit px-3">
+                    <strong>SIGN IN</strong>
+                  </button>
+                </div>
+              </form>
+              <p class="text-center">Not a member? <a href="/auth/register">Sign Up</a></p>
+            </div>
+            <div class="flex-fill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {{ template "layouts/footer.html" .}}
+  {{ template "layouts/scripts.html" .}}
+</body>
+</html>
+{{ end }}

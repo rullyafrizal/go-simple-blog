@@ -42,7 +42,7 @@ func ConnectMysql() *gorm.DB {
 		log.Println(err.Error())
 	}
 
-	db.AutoMigrate(&models.User{}, &models.Post{})
+	db.AutoMigrate(&models.User{}, &models.Category{}, &models.Post{})
 
 	return db
 }

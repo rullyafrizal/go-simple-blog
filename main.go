@@ -6,6 +6,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/rullyafrizal/go-simple-blog/config"
 	"github.com/rullyafrizal/go-simple-blog/routes"
+	"github.com/rullyafrizal/go-simple-blog/seeds"
 )
 
 func main() {
@@ -22,10 +23,10 @@ func main() {
 		log.Fatal("Error connecting to database")
 	}
 
-	err = sqlDb.Ping()
+	err = seeds.Seed(db)
 
 	if err != nil {
-		log.Fatal("Error pinging database")
+		log.Fatal("Error seeding database")
 	}
 
 	defer sqlDb.Close()
