@@ -1,0 +1,93 @@
+{{ define "posts/edit.html" }}
+<!DOCTYPE html>
+<html lang="en">
+  {{ template "layouts/head.html" .}}
+<body>
+  {{ template "components/preloader.html" .}}
+
+  {{ template "layouts/navbar.html" .}}
+
+  <!-- Page Content -->
+  <!-- Banner Starts Here -->
+  <div class="heading-page header-text">
+    <section class="page-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="text-content">
+              <h4>Edit Post</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card shadow">
+          <form class="p-4" method="POST" enctype="multipart/form-data" action="/posts">
+            <div class="form-group">
+              <label for="inputTitle">
+                <strong>Title :</strong>
+              </label>
+              <input type="text" class="form-control" name="post_title" id="inputTitle" placeholder="7 Cara Ampuh Menghilangkan Komedo">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputImage">
+                  <strong>Image :</strong>
+                </label>
+              <input type="file" class="form-control" name="post_image" id="inputImage" placeholder="Apartment, studio, or floor">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputCategory">
+                  <strong>Category :</strong>
+                </label>
+                <select id="inputCategory" class="form-control" name="post_category_id">
+                  <option selected disabled>Choose...</option>
+                  {{ range $i, $category := .categories }}
+                  <option value="{{ $category.ID }}">{{ $category.Name }}</option>
+                  {{ end }}
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ckeditor">
+               <strong>Content :</strong>
+              </label>
+              <div id="ckeditor" name="ckeditor"></div>
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="is_published" id="gridCheck">
+                <label class="form-check-label" for="gridCheck">
+                  Publish
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{ template "layouts/footer.html" .}}
+
+  {{ template "layouts/scripts.html" .}}
+
+  <script>
+    ClassicEditor
+        .create( document.querySelector( '#ckeditor' ) )
+        .then( editor => {
+          editor.ui.view.editable.element.style.height = '300px';
+        })
+        .catch( error => {
+            console.error( error );
+        } );
+  </script>
+</body>
+</html>
+{{ end }}

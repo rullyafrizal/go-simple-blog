@@ -7,8 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetAllCategories(ctx *gin.Context) ([]*models.Category, error) {
-	categoryRepository := repositories.NewCategoryRepository(ctx.MustGet("db").(*gorm.DB))
+func GetAllCategories(c *gin.Context) ([]*models.Category, error) {
+	categoryRepository := repositories.NewCategoryRepository(c.MustGet("db").(*gorm.DB))
 
 	categories, err := categoryRepository.GetAllCategories()
 

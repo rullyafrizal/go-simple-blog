@@ -18,11 +18,22 @@ func SetupRouter(db *gorm.DB) {
 	r.Static("/vendor", "./resources/vendor")
 	r.LoadHTMLGlob("resources/templates/**/*")
 
-	r.GET("/", handlers.Index)
-	r.GET("/posts", handlers.IndexPosts)
+	// Homepage
+	r.GET("/", handlers.IndexPage)
+
+	// Posts
+	r.GET("/posts", handlers.IndexPostsPage)
+	r.GET("/posts/contoh-post-1", handlers.ShowPostPage)
+	r.GET("/posts/create", handlers.CreatePostPage)
+	r.GET("/posts/edit/1", handlers.EditPostPage)
+
+	// Auth
 	r.GET("/auth/login", handlers.LoginPage)
 	r.GET("/auth/register", handlers.RegisterPage)
-	r.GET("/posts/contoh-post-1", handlers.ShowPost)
+	r.POST("/auth/register", handlers.Register)
+	
+	// Dashboard
+	r.GET("/dashboard", handlers.DashboardPage)
 
 	port := utils.Getenv("PORT", "8080")
 

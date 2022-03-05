@@ -1,0 +1,94 @@
+{{ define "dashboard.html" }}
+<!DOCTYPE html>
+<html lang="en">
+{{ template "layouts/head.html" .}}
+<body>
+  {{ template "components/preloader.html" .}}
+  {{ template "layouts/navbar.html" .}}
+
+  <!-- Banner Starts Here -->
+  <div class="heading-page header-text">
+    <section class="page-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="text-content">
+              <h4>Dashboard</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container mt-5">
+    <div class="d-flex justify-content-between my-2 mx-1">
+      <div>
+        <h4>My Posts</h4>
+      </div>
+      <div>
+        <h4>&nbsp;</h4>
+      </div>
+      <div>
+        <a href="/posts/create" class="btn btn-success">+ Create New Post</a>
+      </div>
+    </div>
+    <div class="card shadow px-2 pt-2">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Image</th>
+            <th scope="col">Category</th>
+            <th scope="col" width="15%">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Cara Ampuh Membunuh Kuman</td>
+            <td>Image goes here</td>
+            <td>
+              <span class="badge badge-pill badge-info">Fashion</span>
+            </td>
+            <td>
+              <a href="/posts/edit/1" class="btn btn-warning">Edit</a>
+              <a href="/posts/delete/1" class="btn btn-danger">Delete</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Cara Ampuh Membunuh Kuman</td>
+            <td>Image goes here</td>
+            <td><span class="badge badge-pill badge-info">Fashion</span></td>
+            <td>
+              <a href="/posts/edit/1" class="btn btn-warning">Edit</a>
+              <a href="/posts/delete/1" class="btn btn-danger">Delete</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Cara Ampuh Membunuh Kuman</td>
+            <td>Image goes here</td>
+            <td><span class="badge badge-pill badge-info">Fashion</span></td>
+            <td>
+              <a href="/posts/edit/1" class="btn btn-warning">Edit</a>
+              <a href="/posts/delete/1" class="btn btn-danger">Delete</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Cara Ampuh Membunuh Kuman</td>
+            <td>Image goes here</td>
+            <td><span class="badge badge-pill badge-info">Fashion</span></td>
+            <td>
+              <a href="/posts/edit/1" class="btn btn-warning">Edit</a>
+              <a href="/posts/delete/1" class="btn btn-danger">Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {{ template "layouts/footer.html" .}}
+  {{ template "layouts/scripts.html" .}}
+</body>
+</html>
+{{ end }}
