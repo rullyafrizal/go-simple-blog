@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rullyafrizal/go-simple-blog/handlers"
+	"github.com/rullyafrizal/go-simple-blog/middleware"
 	"github.com/rullyafrizal/go-simple-blog/utils"
 	"gorm.io/gorm"
 )
@@ -24,16 +25,32 @@ func SetupRouter(db *gorm.DB) {
 	// Posts
 	r.GET("/posts", handlers.IndexPostsPage)
 	r.GET("/posts/contoh-post-1", handlers.ShowPostPage)
-	r.GET("/posts/create", handlers.CreatePostPage)
-	r.GET("/posts/edit/1", handlers.EditPostPage)
 
 	// Auth
-	r.GET("/auth/login", handlers.LoginPage)
-	r.GET("/auth/register", handlers.RegisterPage)
-	r.POST("/auth/register", handlers.Register)
-	
-	// Dashboard
-	r.GET("/dashboard", handlers.DashboardPage)
+	guestMiddlewaredRoute := r.Group("/auth")
+	{
+		guestMiddlewaredRoute.Use(middleware.GuestMiddleware())
+		guestMiddlewaredRoute.GET("/login", handlers.LoginPage)
+		guestMiddlewaredRoute.POST("/login", handlers.Login)
+		guestMiddlewaredRoute.GET("/register", handlers.RegisterPage)
+		guestMiddlewaredRoute.POST("/register", handlers.Register)
+	}
+
+	jwtMiddlewaredRoute := r.Group("")
+	{
+		jwtMiddlewaredRoute.Use(middleware.JwtAuthMiddleware())
+
+		jwtMiddlewaredRoute.GET("/auth/logout", handlers.Logout)
+
+		// Dashboard
+		jwtMiddlewaredRoute.GET("/dashboard", handlers.DashboardPage)
+
+		// Posts
+		jwtMiddlewaredRoute.GET("/posts/create", handlers.CreatePostPage)
+		jwtMiddlewaredRoute.GET("/posts/edit/1", handlers.EditPostPage)
+
+		jwtMiddlewaredRoute.GET("/auth/me", handlers.GetAuthenticatedUser)
+	}
 
 	port := utils.Getenv("PORT", "8080")
 

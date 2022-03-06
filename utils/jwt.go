@@ -3,7 +3,6 @@ package utils
 import (
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -46,18 +45,11 @@ func TokenValid(c *gin.Context) error {
 }
 
 func ExtractToken(c *gin.Context) string {
-	token := c.Query("token")
+	var token string
 
-	if token != "" {
-		return token
-	}
+	token = GetCookie(c, "blog_jwt_token")
 
-	bearerToken := c.Request.Header.Get("Authorization")
-	if len(strings.Split(bearerToken, " ")) == 2 {
-		return strings.Split(bearerToken, " ")[1]
-	}
-
-	return ""
+	return token
 }
 
 func ExtractTokenID(c *gin.Context) (int64, error) {

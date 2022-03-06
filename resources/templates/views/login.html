@@ -23,7 +23,22 @@
                   <h3 class="mb-4">Sign In</h3>
                 </div>
               </div>
-              <form action="#" class="signin-form">
+              {{ with .errors.error }}
+                <div class="alert alert-danger" role="alert">
+                  {{ . }}
+                </div>
+              {{ end }}
+              {{ with .errors.email }}
+                <div class="alert alert-danger" role="alert">
+                  {{ . }}
+                </div>
+              {{ end }}
+              {{ with .errors.password }}
+                <div class="alert alert-danger" role="alert">
+                  {{ . }}
+                </div>
+              {{ end }}
+              <form action="/auth/login" method="POST" enctype="multipart/form-data" class="signin-form">
                 <div class="form-group mb-3">
                   <label class="label" for="name">Email</label>
                   <input type="text" class="form-control" placeholder="johndoe@gmail.com" name="email" required="">
