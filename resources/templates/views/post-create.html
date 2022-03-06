@@ -32,20 +32,20 @@
               <label for="inputTitle">
                 <strong>Title :</strong>
               </label>
-              <input type="text" class="form-control" name="post_title" id="inputTitle" placeholder="7 Cara Ampuh Menghilangkan Komedo">
+              <input type="text" class="form-control" name="title" id="inputTitle" placeholder="7 Cara Ampuh Menghilangkan Komedo">
             </div>
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="inputImage">
                   <strong>Image :</strong>
                 </label>
-              <input type="file" class="form-control" name="post_image" id="inputImage" placeholder="Apartment, studio, or floor">
+              <input type="file" class="form-control" name="image" id="inputImage">
               </div>
               <div class="form-group col-md-6">
                 <label for="inputCategory">
                   <strong>Category :</strong>
                 </label>
-                <select id="inputCategory" class="form-control" name="post_category_id">
+                <select id="inputCategory" class="form-control" name="category_id">
                   <option selected disabled>Choose...</option>
                   {{ range $i, $category := .categories }}
                   <option value="{{ $category.ID }}">{{ $category.Name }}</option>
@@ -57,7 +57,7 @@
               <label for="ckeditor">
                <strong>Content :</strong>
               </label>
-              <div id="ckeditor" name="ckeditor"></div>
+              <textarea id="ckeditor" name="content"></textarea>
             </div>
             <div class="form-group">
               <div class="form-check">

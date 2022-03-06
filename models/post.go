@@ -9,7 +9,7 @@ type Post struct {
 	Title       string       `json:"title" gorm:"size:255"`
 	Content     string       `json:"content"`
 	Image       string       `json:"image" gorm:"size:255"`
-	Slug        string       `json:"slug" gorm:"size:255"`
+	Slug        string       `json:"slug" gorm:"size:255;uniqueIndex"`
 	UserId      uint64       `json:"user_id"`
 	CategoryId  uint64       `json:"category_id"`
 	PublishedAt sql.NullTime `json:"published_at"`

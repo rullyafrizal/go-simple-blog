@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"math/rand"
 	"net/mail"
 	"os"
+	"time"
 )
 
 func Getenv(key, fallback string) string {
@@ -15,8 +17,8 @@ func Getenv(key, fallback string) string {
 
 func IsValidEmail(v string) bool {
 	_, err := mail.ParseAddress(v)
-	
-    return err == nil
+
+	return err == nil
 }
 
 func StringifyErrors(err ...error) []string {
@@ -27,4 +29,20 @@ func StringifyErrors(err ...error) []string {
 	}
 
 	return errors
+}
+
+func GenerateRandomString(length int) string {
+	return GenerateRandomStringWithCharset(length, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+}
+
+func GenerateRandomStringWithCharset(length int, charset string) string {
+	var seededRand = rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	b := make([]byte, length)
+
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+
+	return string(b)
 }

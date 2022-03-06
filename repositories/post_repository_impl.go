@@ -39,6 +39,18 @@ func (repository *PostRepositoryImpl) GetPostById(id uint64) (*models.Post, erro
 	return post, nil
 }
 
+func (repository *PostRepositoryImpl) GetPostBySlug(slug string) (*models.Post, error) {
+	var post *models.Post
+
+	err := repository.DB.Where("slug = ?", slug).First(&post).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return post, nil
+}
+
 func (repository *PostRepositoryImpl) InsertPost(post *models.Post) error {
 	return repository.DB.Create(post).Error
 }

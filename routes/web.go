@@ -24,7 +24,7 @@ func SetupRouter(db *gorm.DB) {
 
 	// Posts
 	r.GET("/posts", handlers.IndexPostsPage)
-	r.GET("/posts/contoh-post-1", handlers.ShowPostPage)
+	r.GET("/posts/:slug", handlers.ShowPost)
 
 	// Auth
 	guestMiddlewaredRoute := r.Group("/auth")
@@ -47,6 +47,7 @@ func SetupRouter(db *gorm.DB) {
 
 		// Posts
 		jwtMiddlewaredRoute.GET("/posts/create", handlers.CreatePostPage)
+		jwtMiddlewaredRoute.POST("/posts", handlers.StorePost)
 		jwtMiddlewaredRoute.GET("/posts/edit/1", handlers.EditPostPage)
 
 		jwtMiddlewaredRoute.GET("/auth/me", handlers.GetAuthenticatedUser)
