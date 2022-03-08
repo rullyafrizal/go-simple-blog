@@ -17,10 +17,11 @@ func SetupRouter(db *gorm.DB) {
 
 	r.Static("/assets", "./resources/assets")
 	r.Static("/vendor", "./resources/vendor")
+	r.Static("/images", "./public/images")
 	r.LoadHTMLGlob("resources/templates/**/*")
 
 	// Homepage
-	r.GET("/", handlers.IndexPage)
+	r.GET("/", handlers.HomePage)
 
 	// Posts
 	r.GET("/posts", handlers.IndexPostsPage)
@@ -48,7 +49,9 @@ func SetupRouter(db *gorm.DB) {
 		// Posts
 		jwtMiddlewaredRoute.GET("/posts/create", handlers.CreatePostPage)
 		jwtMiddlewaredRoute.POST("/posts", handlers.StorePost)
-		jwtMiddlewaredRoute.GET("/posts/edit/1", handlers.EditPostPage)
+		jwtMiddlewaredRoute.GET("/posts/edit/:id", handlers.EditPostPage)
+		jwtMiddlewaredRoute.POST("/posts/update/:id", handlers.UpdatePost)
+		jwtMiddlewaredRoute.GET("/posts/delete/:id", handlers.DestroyPost)
 
 		jwtMiddlewaredRoute.GET("/auth/me", handlers.GetAuthenticatedUser)
 	}

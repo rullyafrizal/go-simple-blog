@@ -9,9 +9,9 @@ import (
 
 type User struct {
 	ID        uint64       `json:"id" gorm:"primaryKey"`
-	Name      string       `json:"name" gorm:"size:255"`
-	Email     string       `json:"email" gorm:"size:255"`
-	Password  string       `json:"-" gorm:"size:255"`
+	Name      string       `json:"name" gorm:"size:255;not null"`
+	Email     string       `json:"email" gorm:"size:255;not null"`
+	Password  string       `json:"-" gorm:"size:255;not null"`
 	Posts     []Post       `json:"posts"`
 	CreatedAt sql.NullTime `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt sql.NullTime `json:"updated_at" gorm:"autoUpdateTime"`

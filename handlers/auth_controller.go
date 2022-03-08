@@ -9,6 +9,20 @@ import (
 	"github.com/rullyafrizal/go-simple-blog/utils"
 )
 
+func LoginPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "auth/login.html", gin.H{
+		"route": "auth/login",
+		"title": "Login",
+	})
+}
+
+func RegisterPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "auth/register.html", gin.H{
+		"route": "auth/register",
+		"title": "Register",
+	})
+}
+
 func Login(c *gin.Context) {
 	var loginRequest requests.LoginRequest
 

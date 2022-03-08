@@ -18,7 +18,19 @@ func NewPostRepository(db *gorm.DB) PostRepository {
 func (repository *PostRepositoryImpl) GetAllPosts() ([]*models.Post, error) {
 	var posts []*models.Post
 
-	err := repository.DB.Find(&posts).Error
+	err := repository.DB.Preload("Category").Preload("User").Order("created_at desc").Find(&posts).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
+func (repository *PostRepositoryImpl) GetRecentPosts(limit int) ([]*models.Post, error) {
+	var posts []*models.Post
+
+	err := repository.DB.Preload("Category").Preload("User").Limit(limit).Order("created_at desc").Find(&posts).Error
 
 	if err != nil {
 		return nil, err
@@ -30,7 +42,7 @@ func (repository *PostRepositoryImpl) GetAllPosts() ([]*models.Post, error) {
 func (repository *PostRepositoryImpl) GetPostById(id uint64) (*models.Post, error) {
 	var post *models.Post
 
-	err := repository.DB.Where("id = ?", id).First(&post).Error
+	err := repository.DB.Where("id = ?", id).Preload("Category").Preload("User").First(&post).Error
 
 	if err != nil {
 		return nil, err
@@ -39,10 +51,22 @@ func (repository *PostRepositoryImpl) GetPostById(id uint64) (*models.Post, erro
 	return post, nil
 }
 
+func (repository *PostRepositoryImpl) GetPostsByUserId(userId uint64) ([]*models.Post, error) {
+	var posts []*models.Post
+
+	err := repository.DB.Where("user_id = ?", userId).Preload("Category").Preload("User").Order("created_at desc").Find(&posts).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
 func (repository *PostRepositoryImpl) GetPostBySlug(slug string) (*models.Post, error) {
 	var post *models.Post
 
-	err := repository.DB.Where("slug = ?", slug).First(&post).Error
+	err := repository.DB.Where("slug = ?", slug).Preload("Category").Preload("User").First(&post).Error
 
 	if err != nil {
 		return nil, err

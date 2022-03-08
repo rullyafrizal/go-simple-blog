@@ -28,6 +28,11 @@
       <div class="col-lg-12">
         <div class="card shadow">
           <form class="p-4" method="POST" enctype="multipart/form-data" action="/posts">
+            {{ with .errors.error }}
+              <div class="alert alert-danger" role="alert">
+                {{ . }}
+              </div>
+            {{ end }}
             <div class="form-group">
               <label for="inputTitle">
                 <strong>Title :</strong>
@@ -39,7 +44,7 @@
                 <label for="inputImage">
                   <strong>Image :</strong>
                 </label>
-              <input type="file" class="form-control" name="image" id="inputImage">
+              <input type="file" class="form-control" name="file" id="inputImage">
               </div>
               <div class="form-group col-md-6">
                 <label for="inputCategory">
@@ -58,14 +63,6 @@
                <strong>Content :</strong>
               </label>
               <textarea id="ckeditor" name="content"></textarea>
-            </div>
-            <div class="form-group">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="is_published" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                  Publish
-                </label>
-              </div>
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
           </form>

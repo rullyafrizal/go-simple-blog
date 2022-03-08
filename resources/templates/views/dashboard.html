@@ -44,44 +44,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Cara Ampuh Membunuh Kuman</td>
-            <td>Image goes here</td>
-            <td>
-              <span class="badge badge-pill badge-info">Fashion</span>
-            </td>
-            <td>
-              <a href="/posts/edit/1" class="btn btn-warning">Edit</a>
-              <a href="/posts/delete/1" class="btn btn-danger">Delete</a>
-            </td>
-          </tr>
-          <tr>
-            <td>Cara Ampuh Membunuh Kuman</td>
-            <td>Image goes here</td>
-            <td><span class="badge badge-pill badge-info">Fashion</span></td>
-            <td>
-              <a href="/posts/edit/1" class="btn btn-warning">Edit</a>
-              <a href="/posts/delete/1" class="btn btn-danger">Delete</a>
-            </td>
-          </tr>
-          <tr>
-            <td>Cara Ampuh Membunuh Kuman</td>
-            <td>Image goes here</td>
-            <td><span class="badge badge-pill badge-info">Fashion</span></td>
-            <td>
-              <a href="/posts/edit/1" class="btn btn-warning">Edit</a>
-              <a href="/posts/delete/1" class="btn btn-danger">Delete</a>
-            </td>
-          </tr>
-          <tr>
-            <td>Cara Ampuh Membunuh Kuman</td>
-            <td>Image goes here</td>
-            <td><span class="badge badge-pill badge-info">Fashion</span></td>
-            <td>
-              <a href="/posts/edit/1" class="btn btn-warning">Edit</a>
-              <a href="/posts/delete/1" class="btn btn-danger">Delete</a>
-            </td>
-          </tr>
+          {{ range .posts }}
+            <tr>
+              <td>{{ .Title }}</td>
+              <td>
+                <img src="{{ .Image }}" alt="Post Image" style="width: 150px;">
+              </td>
+              <td>
+                <span class="badge badge-pill badge-info">{{ .Category.Name }}</span>
+              </td>
+              <td>
+                <a href="/posts/edit/{{ .ID }}" class="btn btn-warning">Edit</a>
+                <a href="/posts/delete/{{ .ID }}" class="btn btn-danger">Delete</a>
+              </td>
+            </tr>
+          {{ end }}
         </tbody>
       </table>
     </div>

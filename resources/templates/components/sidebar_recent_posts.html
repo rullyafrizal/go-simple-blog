@@ -5,18 +5,14 @@
   </div>
   <div class="content">
     <ul>
-      <li><a href="post-details.html">
-        <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-        <span>May 31, 2020</span>
-      </a></li>
-      <li><a href="post-details.html">
-        <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-        <span>May 28, 2020</span>
-      </a></li>
-      <li><a href="post-details.html">
-        <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-        <span>May 14, 2020</span>
-      </a></li>
+      {{ range .recent_posts }}
+      <li>
+        <a href="/posts/{{ .Slug }}">
+          <h5>{{ .Title }}</h5>
+          <span>{{ .CreatedAt.Time.Format "Jan 02, 2006" }}</span>
+        </a>
+      </li>
+      {{ end }}
     </ul>
   </div>
 </div>
