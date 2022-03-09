@@ -26,6 +26,7 @@ func SetupRouter(db *gorm.DB) {
 	// Posts
 	r.GET("/posts", handlers.IndexPostsPage)
 	r.GET("/posts/:slug", handlers.ShowPost)
+	r.GET("/categories/:id/posts", handlers.GetPostsByCategory)
 
 	// Auth
 	guestMiddlewaredRoute := r.Group("/auth")

@@ -6,7 +6,7 @@
   <div class="content">
     <ul>
       {{ range $i, $category := .categories }}
-      <li><a href="#">&bull; {{ $category.Name }}</a></li>
+      <li><a href="/categories/{{$category.ID}}/posts">&bull; {{ $category.Name }}</a></li>
       {{ end }}
     </ul>
   </div>

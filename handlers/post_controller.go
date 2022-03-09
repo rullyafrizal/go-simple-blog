@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rullyafrizal/go-simple-blog/services"
@@ -52,12 +53,38 @@ func ShowPost(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "posts/show.html", gin.H{
 		"route":        "/posts/" + post.Slug,
-		"title":        post.Slug,
+		"title":        post.Title,
 		"user":         user,
 		"post":         post,
 		"recent_posts": recentPosts,
 		"categories":   categories,
 	})
+}
+
+func GetPostsByCategory(c *gin.Context) {
+	category, err := services.GetCategoryWithPosts(c)
+
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"status_code": http.StatusInternalServerError,
+			"message":     "Internal Server Error",
+		})
+		return
+	}
+
+	user, _ := services.GetAuthenticatedUser(c)
+	recentPosts, _ := services.GetRecentPosts(c, 3)
+	categories, _ := services.GetAllCategories(c)
+
+	c.HTML(http.StatusOK, "category-posts.html", gin.H{
+		"route": "/categories/" + strconv.Itoa(int(category.ID)) + "/posts",
+		"title": category.Name,
+		"user":  user,
+		"categories": categories,
+		"recent_posts": recentPosts,
+		"category": category,
+	})
+
 }
 
 func StorePost(c *gin.Context) {

@@ -1,0 +1,72 @@
+{{ define "category-posts.html" }}
+<!DOCTYPE html>
+<html lang="en">
+
+  {{ template "layouts/head.html" .}}
+
+  <body>
+
+    {{ template "components/preloader.html" .}}
+
+    {{ template "layouts/navbar.html" .}}
+
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="heading-page header-text">
+      <section class="page-heading">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="text-content">
+                <h4>{{ .category.Name }}</h4>
+                <h2>Our Recent {{ .category.Name }} Blog Entries</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="blog-posts grid-system">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="all-blog-posts">
+              <div class="row">
+                {{ range .category.Posts }}
+                <div class="col-lg-6">
+                  {{ template "components/post_card.html" .}}
+                </div>
+                {{ end }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <div class="row">
+                <div class="col-lg-12">
+                  {{ template "components/sidebar_search.html" }}
+                </div>
+                <!-- Recent Posts -->
+                <div class="col-lg-12">
+                  {{ template "components/sidebar_recent_posts.html" .}}
+                </div>
+                <!-- Categories -->
+                <div class="col-lg-12">
+                  {{ template "components/sidebar_categories.html" .}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    {{ template "layouts/footer.html" .}}
+
+    {{ template "layouts/scripts.html" .}}
+
+  </body>
+</html>
+{{ end }}

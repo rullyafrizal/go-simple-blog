@@ -30,7 +30,7 @@ func (repository *CategoryRepositoryImpl) GetAllCategories() ([]*models.Category
 func (repository *CategoryRepositoryImpl) GetCategoryById(id uint64) (*models.Category, error) {
 	var category models.Category
 
-	err := repository.DB.Where("id = ?", id).First(&category).Error
+	err := repository.DB.Where("id = ?", id).Preload("Posts.User").First(&category).Error
 
 	if err != nil {
 		return nil, err
@@ -38,16 +38,3 @@ func (repository *CategoryRepositoryImpl) GetCategoryById(id uint64) (*models.Ca
 
 	return &category, nil
 }
-
-func (repository *CategoryRepositoryImpl) InsertCategory(category *models.Category) error {
-	return repository.DB.Create(category).Error
-}
-
-func (repository *CategoryRepositoryImpl) UpdateCategory(category *models.Category) error {
-	return repository.DB.Save(category).Error
-}
-
-func (repository *CategoryRepositoryImpl) DeleteCategory(id uint64) error {
-	return repository.DB.Delete(&models.Category{}, id).Error
-}
-
