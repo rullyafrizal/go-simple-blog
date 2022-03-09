@@ -15,10 +15,17 @@ func NewPostRepository(db *gorm.DB) PostRepository {
 	}
 }
 
-func (repository *PostRepositoryImpl) GetAllPosts() ([]*models.Post, error) {
+func (repository *PostRepositoryImpl) GetAllPosts(query string) ([]*models.Post, error) {
 	var posts []*models.Post
 
-	err := repository.DB.Preload("Category").Preload("User").Order("created_at desc").Find(&posts).Error
+	// TODO: add search query logic
+	q := repository.DB.Preload("Category").Preload("User")
+
+	if query != "" {
+		q = q.Where("title LIKE ?", "%"+query+"%")
+	}
+
+	err := q.Order("created_at desc").Find(&posts).Error
 
 	if err != nil {
 		return nil, err

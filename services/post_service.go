@@ -18,8 +18,9 @@ import (
 
 func GetAllPosts(c *gin.Context) ([]*models.Post, error) {
 	postRepository := repositories.NewPostRepository(c.MustGet("db").(*gorm.DB))
+	query := c.Query("search")
 
-	posts, err := postRepository.GetAllPosts()
+	posts, err := postRepository.GetAllPosts(query)
 
 	if err != nil {
 		return nil, err

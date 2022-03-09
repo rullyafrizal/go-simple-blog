@@ -3,7 +3,7 @@ package repositories
 import "github.com/rullyafrizal/go-simple-blog/models"
 
 type PostRepository interface {
-	GetAllPosts() ([]*models.Post, error)
+	GetAllPosts(query string) ([]*models.Post, error)
 	GetRecentPosts(limit int) ([]*models.Post, error)
 	GetPostById(id uint64) (*models.Post, error)
 	GetPostsByUserId(userId uint64) ([]*models.Post, error)
