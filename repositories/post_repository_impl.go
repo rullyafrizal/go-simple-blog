@@ -87,7 +87,13 @@ func (repository *PostRepositoryImpl) InsertPost(post *models.Post) error {
 }
 
 func (repository *PostRepositoryImpl) UpdatePost(post *models.Post) error {
-	return repository.DB.Save(post).Error
+	return repository.DB.Model(post).Select("Title", "Content", "Image", "Slug", "CategoryId").Updates(models.Post{
+		Title:      post.Title,
+		Content:    post.Content,
+		Image:      post.Image,
+		Slug:       post.Slug,
+		CategoryId: post.CategoryId,
+	}).Error
 }
 
 func (repository *PostRepositoryImpl) DeletePost(id uint64) error {

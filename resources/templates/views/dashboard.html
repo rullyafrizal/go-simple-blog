@@ -48,7 +48,11 @@
             <tr>
               <td>{{ .Title }}</td>
               <td>
-                <img src="{{ .Image }}" alt="Post Image" style="width: 150px;">
+                {{ if .Image }}
+                  <img src="{{ .Image }}" alt="{{ .Title }}" width="100">
+                {{ else }}
+                  <img src="https://dummyimage.com/16:9x1080/" alt="{{ .Title }}" width="100">
+                {{ end }}
               </td>
               <td>
                 <span class="badge badge-pill badge-info">{{ .Category.Name }}</span>

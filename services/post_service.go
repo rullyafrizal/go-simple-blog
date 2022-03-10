@@ -87,14 +87,10 @@ func GetPostBySlug(c *gin.Context) (*models.Post, error) {
 	return post, nil
 }
 
-func CreatePost(c *gin.Context) error {
+func CreatePost(c *gin.Context, request *requests.StorePostRequest) error {
 	postRepository := repositories.NewPostRepository(c.MustGet("db").(*gorm.DB))
-	var request requests.StorePostRequest
-	userId, _ := utils.ExtractTokenID(c)
 
-	if err := c.Bind(&request); err != nil {
-		return err
-	}
+	userId, _ := utils.ExtractTokenID(c)
 
 	var imagePath string
 	if _, err := c.FormFile("file"); err == nil {
@@ -105,17 +101,11 @@ func CreatePost(c *gin.Context) error {
 		}
 	}
 
-	postSlug := slug.Make(request.Title)
-
-	if _, err := postRepository.GetPostBySlug(postSlug); err == nil {
-		return errors.New("post title already exists")
-	}
-
 	post := models.Post{
 		Title:      request.Title,
 		Content:    template.HTML(request.Content),
 		CategoryId: request.CategoryId,
-		Slug:       postSlug,
+		Slug:       slug.Make(request.Title),
 		UserId:     uint64(userId),
 		Image:      imagePath,
 	}
@@ -127,14 +117,9 @@ func CreatePost(c *gin.Context) error {
 	return nil
 }
 
-func UpdatePost(c *gin.Context) error {
+func UpdatePost(c *gin.Context, request *requests.UpdatePostRequest) error {
 	postRepository := repositories.NewPostRepository(c.MustGet("db").(*gorm.DB))
-	var request requests.StorePostRequest
 	userId, _ := utils.ExtractTokenID(c)
-
-	if err := c.Bind(&request); err != nil {
-		return err
-	}
 
 	id, err := strconv.Atoi(c.Param("id"))
 
@@ -152,18 +137,6 @@ func UpdatePost(c *gin.Context) error {
 		return errors.New("you are not authorized to update this post")
 	}
 
-	postSlug := slug.Make(request.Title)
-
-	anotherPost, err := postRepository.GetPostBySlug(postSlug)
-
-	if err != nil {
-		return err
-	}
-
-	if anotherPost.ID != uint64(id) {
-		return errors.New("post title already exists")
-	}
-
 	if file, _ := c.FormFile("file"); file != nil {
 		imagePath, err := UploadFile(c)
 
@@ -177,7 +150,7 @@ func UpdatePost(c *gin.Context) error {
 	post.Title = request.Title
 	post.Content = template.HTML(request.Content)
 	post.CategoryId = request.CategoryId
-	post.Slug = postSlug
+	post.Slug = slug.Make(request.Title)
 	post.Category = models.Category{
 		ID: request.CategoryId,
 	}
@@ -218,7 +191,9 @@ func DeletePost(c *gin.Context) error {
 		return err
 	}
 
-	os.Remove("./public" + post.Image)
+	if post.Image != "" {
+		os.Remove("./public" + post.Image)
+	}
 
 	return nil
 }

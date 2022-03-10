@@ -49,9 +49,9 @@ func SetupRouter(db *gorm.DB) {
 
 		// Posts
 		jwtMiddlewaredRoute.GET("/posts/create", handlers.CreatePostPage)
-		jwtMiddlewaredRoute.POST("/posts", handlers.StorePost)
+		jwtMiddlewaredRoute.POST("/posts/create", handlers.StorePost)
 		jwtMiddlewaredRoute.GET("/posts/edit/:id", handlers.EditPostPage)
-		jwtMiddlewaredRoute.POST("/posts/update/:id", handlers.UpdatePost)
+		jwtMiddlewaredRoute.POST("/posts/edit/:id", handlers.UpdatePost)
 		jwtMiddlewaredRoute.GET("/posts/delete/:id", handlers.DestroyPost)
 
 		jwtMiddlewaredRoute.GET("/auth/me", handlers.GetAuthenticatedUser)

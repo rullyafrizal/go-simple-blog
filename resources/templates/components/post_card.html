@@ -1,7 +1,11 @@
 {{ define "components/post_card.html" }}
 <div class="blog-post">
   <div class="blog-thumb">
-    <img src="{{ .Image }}" alt="" style="height: 200px; object-fit: cover;">
+    {{ if .Image }}
+      <img src="{{ .Image }}" alt="{{ .Title }}" style="height: 200px; object-fit: cover;">
+    {{ else }}
+      <img src="https://dummyimage.com/16:9x1080/" alt="{{ .Title }}" style="height: 200px; object-fit: cover;">
+    {{ end }}
   </div>
   <div class="down-content">
     <span>{{ .Category.Name }}</span>

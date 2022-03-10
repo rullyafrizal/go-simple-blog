@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rullyafrizal/go-simple-blog/requests"
 	"github.com/rullyafrizal/go-simple-blog/services"
 	"github.com/rullyafrizal/go-simple-blog/utils"
 )
@@ -77,31 +78,46 @@ func GetPostsByCategory(c *gin.Context) {
 	categories, _ := services.GetAllCategories(c)
 
 	c.HTML(http.StatusOK, "category-posts.html", gin.H{
-		"route": "/categories/" + strconv.Itoa(int(category.ID)) + "/posts",
-		"title": category.Name,
-		"user":  user,
-		"categories": categories,
+		"route":        "/categories/" + strconv.Itoa(int(category.ID)) + "/posts",
+		"title":        category.Name,
+		"user":         user,
+		"categories":   categories,
 		"recent_posts": recentPosts,
-		"category": category,
+		"category":     category,
 	})
 
 }
 
 func StorePost(c *gin.Context) {
-	err := services.CreatePost(c)
+	user, _ := services.GetAuthenticatedUser(c)
+	categories, _ := services.GetAllCategories(c)
+	var request requests.StorePostRequest
 
-	if err != nil {
-		user, _ := services.GetAuthenticatedUser(c)
-		categories, _ := services.GetAllCategories(c)
+	if err := c.Bind(&request); err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"status_code": http.StatusInternalServerError,
+			"message":     "Internal Server Error",
+		})
+		return
+	}
 
+	if errors := request.Validate(c); len(errors) > 0 {
 		c.HTML(http.StatusUnprocessableEntity, "posts/create.html", gin.H{
 			"route":      "posts/create",
 			"title":      "Create Post",
 			"categories": categories,
 			"user":       user,
-			"errors": map[string]string{
-				"error": err.Error(),
-			},
+			"errors":     errors,
+		})
+		return
+	}
+
+	err := services.CreatePost(c, &request)
+
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"status_code": http.StatusInternalServerError,
+			"message":     "Internal Server Error",
 		})
 
 		return
@@ -179,7 +195,35 @@ func EditPostPage(c *gin.Context) {
 }
 
 func UpdatePost(c *gin.Context) {
-	err := services.UpdatePost(c)
+	var request requests.UpdatePostRequest
+
+	if err := c.Bind(&request); err != nil {
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
+			"status_code": http.StatusInternalServerError,
+			"message":     "Internal Server Error",
+		})
+		return
+	}
+
+	postId, _ := strconv.ParseUint(c.Param("id"), 10, 64)
+
+	if errors := request.Validate(c, postId); len(errors) > 0 {
+		user, _ := services.GetAuthenticatedUser(c)
+		categories, _ := services.GetAllCategories(c)
+		post, _ := services.GetPostById(c)
+
+		c.HTML(http.StatusUnprocessableEntity, "posts/edit.html", gin.H{
+			"route":      "/posts/edit",
+			"title":      "Edit Post",
+			"categories": categories,
+			"user":       user,
+			"post":       post,
+			"errors":     errors,
+		})
+		return
+	}
+
+	err := services.UpdatePost(c, &request)
 
 	if err != nil {
 		user, _ := services.GetAuthenticatedUser(c)

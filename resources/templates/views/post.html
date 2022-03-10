@@ -39,7 +39,11 @@
                 <div class="col-lg-12">
                   <div class="blog-post">
                     <div class="blog-thumb">
-                      <img src="{{ .post.Image }}" alt="" style="height: 350px; object-fit: cover;">
+                      {{ if .post.Image }}
+                        <img src="{{ .post.Image }}" alt="{{ .post.Title }}" style="height: 300px; object-fit: cover;">
+                      {{ else }}
+                        <img src="https://dummyimage.com/16:9x1080/" alt="{{ .post.Title }}" style="height: 300px; object-fit: cover;">
+                      {{ end }}
                     </div>
                     <div class="down-content">
                       <span>{{ .post.Category.Name }}</span>

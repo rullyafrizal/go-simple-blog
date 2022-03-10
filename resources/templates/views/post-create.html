@@ -27,12 +27,27 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="card shadow">
-          <form class="p-4" method="POST" enctype="multipart/form-data" action="/posts">
-            {{ with .errors.error }}
-              <div class="alert alert-danger" role="alert">
-                {{ . }}
-              </div>
-            {{ end }}
+          <form class="p-4" method="POST" enctype="multipart/form-data" action="/posts/create">
+              {{ with .errors.error }}
+                <div class="alert alert-danger" role="alert">
+                  {{ . }}
+                </div>
+              {{ end }}
+              {{ with .errors.title }}
+                <div class="alert alert-danger" role="alert">
+                  {{ . }}
+                </div>
+              {{ end }}
+              {{ with .errors.content }}
+                <div class="alert alert-danger" role="alert">
+                  {{ . }}
+                </div>
+              {{ end }}
+              {{ with .errors.category_id }}
+                <div class="alert alert-danger" role="alert">
+                  {{ . }}
+                </div>
+              {{ end }}
             <div class="form-group">
               <label for="inputTitle">
                 <strong>Title :</strong>
