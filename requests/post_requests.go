@@ -33,6 +33,10 @@ func (r *StorePostRequest) Validate(c *gin.Context) map[string]string {
 		if _, err := postRepository.GetPostBySlug(postSlug); err == nil {
 			errors["title"] = "Title already exists"
 		}
+
+		if len(r.Title) > 255 {
+			errors["title"] = "Title can't be longer than 255 characters"
+		}
 	}
 
 	if strings.TrimSpace(r.Content) == "" {

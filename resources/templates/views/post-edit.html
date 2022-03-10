@@ -52,7 +52,7 @@
               <label for="inputTitle">
                 <strong>Title :</strong>
               </label>
-              <input type="text" class="form-control" value="{{ .post.Title }}" name="title" id="inputTitle" placeholder="7 Cara Ampuh Menghilangkan Komedo">
+              <input type="text" class="form-control" value="{{ .post.Title }}" name="title" id="inputTitle" placeholder="7 Cara Ampuh Menghilangkan Komedo" required>
             </div>
             <div class="form-row">
               <div class="form-group col-md-6">
@@ -65,7 +65,7 @@
                 <label for="inputCategory">
                   <strong>Category : </strong>
                 </label>
-                <select id="inputCategory" class="form-control" name="category_id">
+                <select id="inputCategory" class="form-control" name="category_id" required>
                   <option disabled>Choose...</option>
                   {{ range .categories }}
                     {{ if eq .ID $.post.CategoryId }}

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/rullyafrizal/go-simple-blog/requests"
 	"github.com/rullyafrizal/go-simple-blog/services"
 	"github.com/rullyafrizal/go-simple-blog/utils"
+	"gorm.io/gorm"
 )
 
 func IndexPostsPage(c *gin.Context) {
@@ -36,12 +38,17 @@ func IndexPostsPage(c *gin.Context) {
 }
 
 func ShowPost(c *gin.Context) {
-	categories, err := services.GetAllCategories(c)
 	post, err := services.GetPostBySlug(c)
 
-	post.SanitizeContent()
-
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.HTML(http.StatusNotFound, "error.html", gin.H{
+				"status_code": http.StatusNotFound,
+				"message":     "Post Not Found",
+			})
+			return
+		}
+
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"status_code": http.StatusInternalServerError,
 			"message":     "Internal Server Error",
@@ -49,8 +56,11 @@ func ShowPost(c *gin.Context) {
 		return
 	}
 
+	post.SanitizeContent()
+
 	user, _ := services.GetAuthenticatedUser(c)
 	recentPosts, _ := services.GetRecentPosts(c, 3)
+	categories, _ := services.GetAllCategories(c)
 
 	c.HTML(http.StatusOK, "posts/show.html", gin.H{
 		"route":        "/posts/" + post.Slug,
@@ -169,17 +179,28 @@ func EditPostPage(c *gin.Context) {
 			"status_code": http.StatusInternalServerError,
 			"message":     "Internal Server Error",
 		})
+		return
 	}
 
-	post, _ := services.GetPostById(c)
-	userId, err := utils.ExtractTokenID(c)
+	post, err := services.GetPostById(c)
 
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.HTML(http.StatusNotFound, "error.html", gin.H{
+				"status_code": http.StatusNotFound,
+				"message":     "Post Not Found",
+			})
+			return
+		}
+
 		c.HTML(http.StatusInternalServerError, "error.html", gin.H{
 			"status_code": http.StatusInternalServerError,
 			"message":     "Internal Server Error",
 		})
+		return
 	}
+
+	userId, _ := utils.ExtractTokenID(c)
 
 	if uint64(userId) != post.UserId {
 		c.Redirect(http.StatusFound, "/dashboard")
