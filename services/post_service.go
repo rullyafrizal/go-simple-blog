@@ -144,6 +144,10 @@ func UpdatePost(c *gin.Context, request *requests.UpdatePostRequest) error {
 			return err
 		}
 
+		if post.Image != "" {
+			os.Remove("./public" + post.Image)
+		}
+
 		post.Image = imagePath
 	}
 
